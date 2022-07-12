@@ -8,8 +8,9 @@ find_package(glog CONFIG REQUIRED)
 
 include_directories(inc)
 include_directories(inc/manager)
+aux_source_directory(src SRC)
 
-add_executable(app main.cpp "src/logger.cpp")
+add_executable(app main.cpp ${SRC})
 target_link_libraries(app PRIVATE glog::glog)
 install(TARGETS app
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/install)

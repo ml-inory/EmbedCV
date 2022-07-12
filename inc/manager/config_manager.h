@@ -10,11 +10,16 @@
 
 #include "err_code.h"
 
+enum CONFIG_GET_METHOD_E {
+	CONFIG_GET_METHOD_LOCAL = 0X01,
+	CONFIG_GET_METHOD_CLOUD = 0X02
+};
+
 class ConfigManager {
 public:
 	~ConfigManager() = default;
 
-
+	static ERR_CODE get_config(Config& config, CONFIG_GET_METHOD_E method, bool force_cloud = true);
 
 private:
 	ConfigManager() = default;
