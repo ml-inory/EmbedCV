@@ -11,6 +11,14 @@
 #include "err_code.h"
 
 class ConfigManager {
+public:
+	~ConfigManager() = default;
+
+
+
+private:
+	ConfigManager() = default;
+
 	/**
 	 * 功能描述: 解析出配置
 	 *
