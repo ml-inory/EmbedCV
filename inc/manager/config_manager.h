@@ -9,17 +9,18 @@
 #include <string>
 
 #include "err_code.h"
+#include "config.h"
 
-enum CONFIG_GET_METHOD_E {
-	CONFIG_GET_METHOD_LOCAL = 0X01,
-	CONFIG_GET_METHOD_CLOUD = 0X02
-};
 
 class ConfigManager {
 public:
 	~ConfigManager() = default;
 
-	static ERR_CODE get_config(Config& config, CONFIG_GET_METHOD_E method, bool force_cloud = true);
+	static ERR_CODE get_config_from_local(Config& config, const std::string& config_path);
+
+	static ERR_CODE get_config_from_cloud(Config& config);
+
+	static ERR_CODE start_fetch_thread();
 
 private:
 	ConfigManager() = default;
