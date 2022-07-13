@@ -8,7 +8,7 @@
 
 #include "processor.hpp"
 
-class DigitalFenceProcessor final : public Processor<DigitalFenceProcessor> {
+class DigitalFenceProcessor final : public ProcessorImpl<DigitalFenceProcessor> {
 public:
 	/**
 	 * 功能描述: 初始化
@@ -23,14 +23,26 @@ public:
 	}
 
 	/**
-	 * 功能描述: 运行
+	 * 功能描述: 启动
 	 *
 	 * 输出参数：
 	 * 输入参数：
 	 * 返回参数：错误码，参考err_code.h
 	 */
-	ERR_CODE run_impl() {
-		LOG(INFO) << "Run DigitalFenceProcessor";
+	ERR_CODE start_impl() {
+		LOG(INFO) << "Start DigitalFenceProcessor";
+		return SUCCESS;
+	}
+
+	/**
+	 * 功能描述: 停止
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE stop_impl() {
+		LOG(INFO) << "Stop DigitalFenceProcessor";
 		return SUCCESS;
 	}
 

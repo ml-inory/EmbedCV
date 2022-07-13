@@ -7,6 +7,52 @@
 * ******************************************************************************/
 #pragma once
 
-class ProcessManager {
+#include "model_manager.h"
+#include "processor.hpp"
+#include "err_code.h"
 
+#include <vector>
+#include <memory>
+
+class ProcessManager {
+public:
+	/**
+	 * 功能描述: 创建线程
+	 *
+	 * 输出参数：
+	 * 输入参数：config		配置
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE create(const Config& config);
+
+	/**
+	 * 功能描述: 启动线程
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE start();
+
+	/**
+	 * 功能描述: 停止线程
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE stop();
+
+	/**
+	 * 功能描述: 销毁线程
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE destroy();
+
+private:
+	ModelManager m_model_manager;
+	std::vector<std::shared_ptr<Processor> > m_processors;
 };

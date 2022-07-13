@@ -7,6 +7,46 @@
 * ******************************************************************************/
 #pragma once
 
-class ModelManager {
+#include "err_code.h"
+#include "model.h"
+#include "config.h"
 
+#include <string>
+#include <map>
+#include <memory>
+
+class ModelManager {
+public:
+	ModelManager() = default;
+	~ModelManager() = default;
+
+	/**
+	 * 功能描述: 创建模型
+	 *
+	 * 输出参数：
+	 * 输入参数：config		配置
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE create(const Config& config);
+
+	/**
+	 * 功能描述: 销毁模型
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE destroy();
+
+	/**
+	 * 功能描述: 获取模型
+	 *
+	 * 输出参数：model			模型
+	 * 输入参数：model_name		模型名称
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE get(Model& model, const std::string& model_name);
+
+private:
+	std::map<std::string, std::shared_ptr<Model> > m_model_map;
 };

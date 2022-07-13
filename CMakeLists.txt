@@ -8,6 +8,11 @@ find_package(glog CONFIG REQUIRED)
 
 include_directories(inc)
 include_directories(inc/manager)
+include_directories(inc/processor/input)
+include_directories(inc/processor/cv)
+include_directories(inc/processor/bussiness)
+include_directories(inc/processor/display)
+
 aux_source_directory(src SRC)
 aux_source_directory(src/manager SRC)
 

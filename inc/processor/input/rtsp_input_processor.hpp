@@ -8,7 +8,7 @@
 
 #include "processor.hpp"
 
-class RTSPInputProcessor final : public Processor<RTSPInputProcessor> {
+class RTSPInputProcessor final : public ProcessorImpl<RTSPInputProcessor> {
 public:
 	/**
 	 * 功能描述: 初始化
@@ -23,14 +23,26 @@ public:
 	}
 
 	/**
-	 * 功能描述: 运行
+	 * 功能描述: 启动
 	 *
 	 * 输出参数：
 	 * 输入参数：
 	 * 返回参数：错误码，参考err_code.h
 	 */
-	ERR_CODE run_impl() {
-		LOG(INFO) << "Run RTSPInputProcessor";
+	ERR_CODE start_impl() {
+		LOG(INFO) << "Start RTSPInputProcessor";
+		return SUCCESS;
+	}
+
+	/**
+	 * 功能描述: 停止
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE stop_impl() {
+		LOG(INFO) << "Stop RTSPInputProcessor";
 		return SUCCESS;
 	}
 
