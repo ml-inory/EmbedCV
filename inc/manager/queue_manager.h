@@ -7,6 +7,48 @@
 * ******************************************************************************/
 #pragma once
 
-class QueueManager {
+#include "err_code.h"
+#include "whale_any.h"
+#include "mpmc_queue.h"
 
+#include <string>
+#include <map>
+
+class QueueManager {
+public:
+	QueueManager() = default;
+	~QueueManager() = default;
+
+	// 队列类型
+	typedef moodycamel::ConcurrentQueue<WhaleAny>   QueueType;
+
+	/**
+	 * 功能描述: 创建队列
+	 *
+	 * 输出参数：
+	 * 输入参数：queue_name		队列名称
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE create(const std::string& queue_name);
+
+	/**
+	 * 功能描述: 销毁队列
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE destroy();
+
+	/**
+	 * 功能描述: 获取队列
+	 *
+	 * 输出参数：queue			队列
+	 * 输入参数：queue_name		队列名称
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE get(QueueType& queue, const std::string& queue_name);
+
+private:
+	std::map<std::string, std::shared_ptr<QueueType> > m_queue_map;
 };

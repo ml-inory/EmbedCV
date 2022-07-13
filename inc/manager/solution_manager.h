@@ -7,6 +7,55 @@
 * ******************************************************************************/
 #pragma once
 
-class SolutionManager {
+#include "config.h"
+#include "err_code.h"
+#include "solution.h"
 
+#include <memory>
+#include <vector>
+
+class SolutionManager {
+public:
+	~SolutionManager() = default;
+
+	/**
+	 * 功能描述: 创建解决方案
+	 *
+	 * 输出参数：
+	 * 输入参数：config		配置
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	static ERR_CODE create(const Config& config);
+
+	/**
+	 * 功能描述: 启动解决方案
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	static ERR_CODE start();
+
+	/**
+	 * 功能描述: 停止解决方案
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	static ERR_CODE stop();
+
+	/**
+	 * 功能描述: 销毁解决方案
+	 *
+	 * 输出参数：
+	 * 输入参数：
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	static ERR_CODE destroy();
+
+private:
+	SolutionManager() = default;
+
+	static std::vector<std::shared_ptr<Solution> > g_solutions;
 };
