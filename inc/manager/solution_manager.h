@@ -58,4 +58,5 @@ private:
 	SolutionManager() = default;
 
 	static std::vector<std::shared_ptr<Solution> > g_solutions;
+	static bool g_has_start;
 };

@@ -2,6 +2,7 @@
 #include "logger.h"
 
 std::vector<std::shared_ptr<Solution> > SolutionManager::g_solutions;
+bool SolutionManager::g_has_start = false;
 
 ERR_CODE SolutionManager::create(const Config& config) {
 	LOG(INFO) << "Create solutions";
@@ -18,6 +19,10 @@ ERR_CODE SolutionManager::create(const Config& config) {
 }
 
 ERR_CODE SolutionManager::start() {
+	if (g_has_start) {
+		return SUCCESS;
+	}
+
 	LOG(INFO) << "Start solutions";
 	for (auto& solution : g_solutions) {
 		ERR_CODE ret = solution->start();
@@ -26,10 +31,16 @@ ERR_CODE SolutionManager::start() {
 			return ret;
 		}
 	}
+
+	g_has_start = true;
 	return SUCCESS;
 }
 
 ERR_CODE SolutionManager::stop() {
+	if (!g_has_start) {
+		return SUCCESS;
+	}
+
 	LOG(INFO) << "Stop solutions";
 	for (auto& solution : g_solutions) {
 		ERR_CODE ret = solution->stop();
@@ -38,10 +49,19 @@ ERR_CODE SolutionManager::stop() {
 			return ret;
 		}
 	}
+
+	g_has_start = false;
 	return SUCCESS;
 }
 
 ERR_CODE SolutionManager::destroy() {
+	if (g_has_start) {
+		ERR_CODE ret = stop();
+		if (ret != SUCCESS) {
+			return ret;
+		}
+	}
+
 	LOG(INFO) << "Destroy solutions";
 	for (auto it = g_solutions.begin(); it != g_solutions.end(); ) {
 		ERR_CODE ret = (*it)->release();
@@ -52,5 +72,6 @@ ERR_CODE SolutionManager::destroy() {
 
 		it = g_solutions.erase(it);
 	}
+
 	return SUCCESS;
 }
