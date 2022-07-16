@@ -3759,3 +3759,6 @@ namespace moodycamel {
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic pop
 #endif
+
+// 队列类型
+typedef moodycamel::ConcurrentQueue<WhaleAny>   Queue;

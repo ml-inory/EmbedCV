@@ -8,6 +8,7 @@
 #pragma once
 
 #include "model_manager.h"
+#include "queue_manager.h"
 #include "processor.hpp"
 #include "err_code.h"
 
@@ -16,6 +17,12 @@
 
 class ProcessManager {
 public:
+	ProcessManager() = default;
+
+	~ProcessManager() {
+		destroy();
+	}
+
 	/**
 	 * 功能描述: 创建线程
 	 *
@@ -53,6 +60,7 @@ public:
 	ERR_CODE destroy();
 
 private:
-	ModelManager m_model_manager;
+	ModelManager    m_model_manager;
+	QueueManager	m_queue_manager;
 	std::vector<std::shared_ptr<Processor> > m_processors;
 };

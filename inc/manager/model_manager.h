@@ -18,7 +18,9 @@
 class ModelManager {
 public:
 	ModelManager() = default;
-	~ModelManager() = default;
+	~ModelManager() {
+		destroy();
+	}
 
 	/**
 	 * 功能描述: 创建模型

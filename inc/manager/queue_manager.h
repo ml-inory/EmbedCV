@@ -10,6 +10,7 @@
 #include "err_code.h"
 #include "whale_any.h"
 #include "mpmc_queue.h"
+#include "processor.hpp"
 
 #include <string>
 #include <map>
@@ -17,10 +18,10 @@
 class QueueManager {
 public:
 	QueueManager() = default;
-	~QueueManager() = default;
 
-	// 队列类型
-	typedef moodycamel::ConcurrentQueue<WhaleAny>   QueueType;
+	~QueueManager() {
+		destroy();
+	}
 
 	/**
 	 * 功能描述: 创建队列
@@ -47,8 +48,19 @@ public:
 	 * 输入参数：queue_name		队列名称
 	 * 返回参数：错误码，参考err_code.h
 	 */
-	ERR_CODE get(QueueType& queue, const std::string& queue_name);
+	ERR_CODE get(std::shared_ptr<Queue>& queue, const std::string& queue_name);
+
+	/**
+	 * 功能描述: 创建队列以连接两个processor
+	 *
+	 * 输出参数：
+	 * 输入参数：prev_processor		前一个processor
+	 *           next_processor     后一个processor
+	 *           queue_name         要创建的队列名称
+	 * 返回参数：错误码，参考err_code.h
+	 */
+	ERR_CODE connect(std::shared_ptr<Processor>& prev_processor, std::shared_ptr<Processor>& next_processor, const std::string& queue_name);
 
 private:
-	std::map<std::string, std::shared_ptr<QueueType> > m_queue_map;
+	std::map<std::string, std::shared_ptr<Queue> > m_queue_map;
 };

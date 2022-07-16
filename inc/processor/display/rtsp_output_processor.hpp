@@ -29,21 +29,8 @@ public:
 	 * 输入参数：
 	 * 返回参数：错误码，参考err_code.h
 	 */
-	ERR_CODE start_impl() {
-		LOG(INFO) << "Start RTSPOutputProcessor";
-		return SUCCESS;
-	}
-
-	/**
-	 * 功能描述: 停止
-	 *
-	 * 输出参数：
-	 * 输入参数：
-	 * 返回参数：错误码，参考err_code.h
-	 */
-	ERR_CODE stop_impl() {
-		LOG(INFO) << "Stop RTSPOutputProcessor";
-		return SUCCESS;
+	void run_impl() {
+		LOG(INFO) << "Run RTSPOutputProcessor";
 	}
 
 	/**

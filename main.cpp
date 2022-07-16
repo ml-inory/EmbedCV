@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <thread>
+#include <chrono>
 
 #include "logger.h"
 #include "config_manager.h"
@@ -29,6 +31,8 @@ int main(int argc, char** argv) {
 		LOG(ERROR) << "start solution failed!";
 		return -1;
 	}
+
+	std::this_thread::sleep_for(std::chrono::seconds(10));
 
 	// 停止解决方案
 	ret = SolutionManager::stop();

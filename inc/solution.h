@@ -8,10 +8,15 @@
 
 #include "manager/model_manager.h"
 #include "manager/process_manager.h"
-#include "manager/queue_manager.h"
 
 class Solution {
 public:
+	Solution() = default;
+
+	~Solution() {
+		release();
+	}
+
 	/**
 	 * 功能描述: 初始化
 	 *
@@ -50,5 +55,4 @@ public:
 
 protected:
 	ProcessManager	m_process_manager;
-	QueueManager	m_queue_manager;
 };

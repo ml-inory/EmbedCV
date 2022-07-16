@@ -17,13 +17,6 @@ ERR_CODE Solution::init(const Config& config) {
 		return ret;
 	}
 
-	// 创建队列
-	ret = m_queue_manager.create("dummy_queue");
-	if (ret != SUCCESS) {
-		LOG(ERROR) << "Create queue failed!";
-		return ret;
-	}
-
 	return SUCCESS;
 }
 

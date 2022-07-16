@@ -52,6 +52,28 @@ ERR_CODE ProcessManager::create(const Config& config) {
 		return ret;
 	}
 
+	// 用队列连接线程
+	std::string queue0("QUEUE0");
+	std::string queue1("QUEUE1");
+	std::string queue2("QUEUE2");
+	ret = m_queue_manager.connect(input_processor, cv_processor, queue0);
+	if (ret != SUCCESS) {
+		LOG(ERROR) << "Connect input_processor and cv_processor failed!";
+		return ret;
+	}
+
+	ret = m_queue_manager.connect(cv_processor, digit_fence_processor, queue1);
+	if (ret != SUCCESS) {
+		LOG(ERROR) << "Connect cv_processor and digit_fence_processor failed!";
+		return ret;
+	}
+
+	ret = m_queue_manager.connect(digit_fence_processor, display_processor, queue2);
+	if (ret != SUCCESS) {
+		LOG(ERROR) << "Connect digit_fence_processor and display_processor failed!";
+		return ret;
+	}
+
 	m_processors.push_back(input_processor);
 	m_processors.push_back(cv_processor);
 	m_processors.push_back(digit_fence_processor);
