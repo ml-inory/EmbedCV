@@ -45,3 +45,5 @@ public:
 		return SUCCESS;
 	}
 };
+
+REGISTER_PROCESSOR(DigitalFenceProcessor);

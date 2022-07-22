@@ -1,4 +1,5 @@
 #include "process_manager.h"
+#include "object_factory.hpp"
 #include "logger.h"
 
 #include "rtsp_input_processor.hpp"
@@ -20,33 +21,65 @@ ERR_CODE ProcessManager::create(const Config& config) {
 		LOG(ERROR) << "Create model failed!";
 		return ret;
 	}
-	 
+
+	// 检查配置
+	if (!config.isMember("input")) {
+		LOG(ERROR) << "Config must contain \"input\"";
+		return FAIL;
+	}
+
+	if (!config.isMember("cv")) {
+		LOG(ERROR) << "Config must contain \"cv\"";
+		return FAIL;
+	}
+
+	if (!config.isMember("bussiness")) {
+		LOG(ERROR) << "Config must contain \"bussiness\"";
+		return FAIL;
+	}
+
+	if (!config.isMember("display")) {
+		LOG(ERROR) << "Config must contain \"display\"";
+		return FAIL;
+	}
+ 
 	// 创建线程
-	std::shared_ptr<Processor> input_processor(new ProcessorImpl<RTSPInputProcessor>(&m_model_manager));
-	std::shared_ptr<Processor> cv_processor(new ProcessorImpl<TBDProcessor>(&m_model_manager));
-	std::shared_ptr<Processor> digit_fence_processor(new ProcessorImpl<DigitalFenceProcessor>(&m_model_manager));
-	std::shared_ptr<Processor> display_processor(new ProcessorImpl<RTSPOutputProcessor>(&m_model_manager));
+	const std::string appendix("Processor");
+
+	std::string input_type = config["input"]["type"].asString();
+	if (input_type == "RTSP")	input_type += "Input" + appendix;
+	std::shared_ptr<Processor> input_processor = ObjectFactory::create<Processor>(input_type);
+
+	std::string cv_type = config["cv"]["type"].asString() + appendix;
+	std::shared_ptr<Processor> cv_processor = ObjectFactory::create<Processor>(cv_type);
+
+	std::string bus_type = config["bussiness"]["type"].asString() + appendix;
+	std::shared_ptr<Processor> digit_fence_processor = ObjectFactory::create<Processor>(bus_type);
+
+	std::string display_type = config["display"]["type"].asString();
+	if (display_type == "RTSP")	display_type += "Output" + appendix;
+	std::shared_ptr<Processor> display_processor = ObjectFactory::create<Processor>(display_type);
 
 	// 初始化线程
-	ret = input_processor->init(config);
+	ret = input_processor->init(config, &m_model_manager);
 	if (ret != SUCCESS) {
 		LOG(ERROR) << "Init rtsp_input_processor failed!";
 		return ret;
 	}
 
-	ret = cv_processor->init(config);
+	ret = cv_processor->init(config, &m_model_manager);
 	if (ret != SUCCESS) {
 		LOG(ERROR) << "Init tbd_processor failed!";
 		return ret;
 	}
 
-	ret = digit_fence_processor->init(config);
+	ret = digit_fence_processor->init(config, &m_model_manager);
 	if (ret != SUCCESS) {
 		LOG(ERROR) << "Init digit_fence_processor failed!";
 		return ret;
 	}
 
-	ret = display_processor->init(config);
+	ret = display_processor->init(config, &m_model_manager);
 	if (ret != SUCCESS) {
 		LOG(ERROR) << "Init display_processor failed!";
 		return ret;

@@ -6,15 +6,32 @@ bool SolutionManager::g_has_start = false;
 
 ERR_CODE SolutionManager::create(const Config& config) {
 	LOG(INFO) << "Create solutions";
-	std::shared_ptr<Solution> solution = std::make_shared<Solution>();
-	// 初始化解决方案
-	ERR_CODE ret = solution->init(config);
-	if (ret != SUCCESS) {
-		LOG(ERROR) << "Init solution failed!";
-		return ret;
+
+	// 解析json
+	if (!config.isMember("solutions")) {
+		LOG(ERROR) << "Config must contain \"solutions\"";
+		return FAIL;
 	}
 
-	g_solutions.push_back(solution);
+	Config solution_configs = config["solutions"];
+	for (Json::Value::ArrayIndex i = 0; i < solution_configs.size(); ++i) {
+		// 检查配置类型
+		if (!solution_configs[i].isObject()) {
+			LOG(ERROR) << "solutions[" << i << "] must be Object";
+			return FAIL;
+		}
+
+		std::shared_ptr<Solution> solution = std::make_shared<Solution>();
+		// 初始化解决方案
+		ERR_CODE ret = solution->init(solution_configs[i]);
+		if (ret != SUCCESS) {
+			LOG(ERROR) << "Init solution failed!";
+			return ret;
+		}
+
+		g_solutions.push_back(solution);
+	}
+	
 	return SUCCESS;
 }
 

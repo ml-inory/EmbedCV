@@ -13,7 +13,11 @@ using namespace std;
 * 返回参数：错误码，参考err_code.h
 */
 ERR_CODE parse_config(Config& config, const std::string& config_string) {
-	// TODO
+	Json::Reader reader;
+	if (!reader.parse(config_string, config, false)) {
+		LOG(ERROR) << "Parse json failed!";
+		return FAIL;
+	}
 	return SUCCESS;
 }
 

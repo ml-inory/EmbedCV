@@ -11,6 +11,7 @@
 #include "manager/model_manager.h"
 #include "mpmc_queue.h"
 #include "logger.h"
+#include "processor/processor_factory.hpp"
 
 #include <thread>
 #include <atomic>
@@ -20,8 +21,7 @@
 
 class Processor {
 public:
-	explicit Processor(ModelManager* model_manager): 
-		m_model_manager(model_manager),
+	Processor(): 
 		m_input_queue(nullptr),
 		m_output_queue(nullptr)
 	{
@@ -32,10 +32,11 @@ public:
 	 * 功能描述: 初始化
 	 *
 	 * 输出参数：
-	 * 输入参数：config		配置
+	 * 输入参数：config				配置
+	 *			 model_manager		可为nullptr
 	 * 返回参数：错误码，参考err_code.h
 	 */
-	virtual ERR_CODE init(const Config& config) = 0;
+	virtual ERR_CODE init(const Config& config, ModelManager* model_manager = nullptr) = 0;
 
 	/**
 	 * 功能描述: 启动
@@ -107,8 +108,8 @@ protected:
 template <typename T>
 class ProcessorImpl : public Processor {
 public:
-	explicit ProcessorImpl(ModelManager* model_manager) :
-		Processor(model_manager),
+	explicit ProcessorImpl() :
+		Processor(),
 		m_running(false)
 	{
 
@@ -121,7 +122,8 @@ public:
 	 * 输入参数：config		配置
 	 * 返回参数：错误码，参考err_code.h
 	 */
-	ERR_CODE init(const Config& config) {
+	ERR_CODE init(const Config& config, ModelManager* model_manager = nullptr) {
+		m_model_manager = model_manager;
 		return static_cast<T*>(this)->init_impl(config);
 	}
 

@@ -6,6 +6,9 @@
 * ******************************************************************************/
 #pragma once
 
-class Config {
+#include <json/json.h>
 
-};
+//class Config {
+//
+//};
+typedef Json::Value Config;
